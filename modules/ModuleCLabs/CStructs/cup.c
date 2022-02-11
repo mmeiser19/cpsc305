@@ -33,11 +33,43 @@ int fill(cup *c, contents v, int oz) {
 }
 
 cup *find_fullest(cup **ca, int num_eles) {
-    return 0;
+    double fullest = (double) ca[0]->cur_oz / (double) ca[0]->max_oz;
+    cup *fullestCup = ca[0];
+    for (int i = 0; i < num_eles; i++) {
+        double ratio = (double) ca[i]->cur_oz / (double) ca[i]->max_oz;
+        if (ratio > fullest) {
+            fullest = ratio;
+            fullestCup = ca[i];
+        }
+        else if (ratio == fullest) {
+            if (ca[i]->cur_oz > fullestCup->cur_oz) {
+                fullestCup = ca[i];
+            }
+        }
+    }
+    return fullestCup;
 }
 
+//test with 3 cups in main for sorting
 void sort_cups(cup **ca, int num_eles) {
-    return;
+    for (int i = 0; i < num_eles; i++) {
+        for (int j = 0; j < num_eles - 1 - i; j++) {
+            double ratio1 = (double) ca[j]->cur_oz / ca[j]->max_oz;
+            double ratio2 = (double) ca[j + 1]->cur_oz / ca[j + 1]->max_oz;
+            if (ratio1 > ratio2) {
+                cup *temp = ca[j];
+                ca[j] = ca[j + 1];
+                ca[j + 1] = temp;
+            }
+            else if (ratio1 == ratio2) {
+                if (ca[j]->cur_oz > ca[j + 1]->cur_oz) {
+                    cup *temp = ca[j];
+                    ca[j] = ca[j + 1];
+                    ca[j + 1] = temp;
+                }
+            }
+        }
+    }
 }
 
 void print_cups(cup **ca, int num_eles) {
@@ -46,4 +78,3 @@ void print_cups(cup **ca, int num_eles) {
         print_cup(ca[i]);
     }
 }
-
